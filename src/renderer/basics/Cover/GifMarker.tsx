@@ -2,7 +2,7 @@ import React from "react";
 import styled from "renderer/styles";
 
 interface Props {
-  label?: string | JSX.Element | JSX.Element[];
+  label?: string | React.ReactElement | React.ReactElement[];
 }
 
 const GifMarkerSpan = styled.span`

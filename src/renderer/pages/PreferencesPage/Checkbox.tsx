@@ -25,7 +25,7 @@ class Checkbox extends React.PureComponent<Props> {
 
 interface Props {
   name: keyof PreferencesState;
-  label: string | JSX.Element;
+  label: string | React.ReactElement;
   children?: any;
 
   dispatch: Dispatch;

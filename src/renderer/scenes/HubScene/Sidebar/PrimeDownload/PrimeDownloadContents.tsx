@@ -138,7 +138,7 @@ class PrimeDownloadContents extends React.PureComponent<Props> {
     });
   };
 
-  renderProgress(): JSX.Element {
+  renderProgress(): React.ReactElement {
     const { progress, downloadsPaused, caveId, taskName, game } = this.props;
     if (taskName) {
       return (

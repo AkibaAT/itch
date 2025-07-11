@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "renderer/styles";
 import { singleLine } from "renderer/styles";
 
 export const SelectValueDiv = styled.div`

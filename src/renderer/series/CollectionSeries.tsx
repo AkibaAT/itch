@@ -53,7 +53,7 @@ export default function makeCollectionSeries<Params, Res extends FetchRes<any>>(
       return f;
     }
 
-    static renderItemExtrasCallback(f: (item: Item) => JSX.Element) {
+    static renderItemExtrasCallback(f: (item: Item) => React.ReactElement) {
       return f;
     }
   }

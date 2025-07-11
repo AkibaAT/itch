@@ -121,7 +121,7 @@ export async function request(
       reject(new RequestError(e.message));
     });
 
-    req.on("abort", (_e: Error) => {
+    (req as any).on("abort", (_e: Error) => {
       reject(new RequestAborted());
     });
 

@@ -494,6 +494,8 @@ export interface PreferencesState {
 
   /** whether or not we've already imported appdata as an install location */
   importedOldInstallLocations: boolean;
+  /** comma-separated list of allowed domains for browser navigation (advanced setting) */
+  allowedDomains?: string;
 }
 
 export interface Task {

@@ -240,7 +240,7 @@ class NavigationBar extends React.PureComponent<Props, State> {
     );
   }
 
-  renderURL(url: string): JSX.Element {
+  renderURL(url: string): React.ReactElement {
     let isHTTP = HTTP_RE.test(url);
     let isHTTPS = HTTPS_RE.test(url);
     let isItch = ITCH_RE.test(url);
@@ -294,14 +294,12 @@ class NavigationBar extends React.PureComponent<Props, State> {
       const input = e.currentTarget.value;
       const url = transformUrl(input);
 
-      const parsedUrl = new URL(url);
-      // If the supplied url is external to itch, then
+      const { isUrlAllowed } = require("common/constants/allowed-domains");
+      const preferences = store.getState().preferences;
+
+      // If the supplied url is external to allowed domains, then
       // open in a new external browser window
-      if (
-        parsedUrl.origin.endsWith(".itch.io") ||
-        parsedUrl.origin.endsWith("/itch.io") ||
-        ITCH_URL_RE.test(parsedUrl.origin)
-      ) {
+      if (ITCH_URL_RE.test(url) || isUrlAllowed(url, preferences)) {
         dispatchTabEvolve(this.props, { url, replace: false });
       } else {
         store.dispatch(actions.openInExternalBrowser({ url: url }));

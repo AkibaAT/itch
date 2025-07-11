@@ -33,9 +33,11 @@ const logger = createLogger({
 });
 middleware.push(logger);
 
-const enhancers = [syncRenderer, applyMiddleware(...middleware)];
-
 const initialState = {} as any;
+
+// Create store with Redux 4 and electron-redux
+const storeEnhancer = compose(syncRenderer, applyMiddleware(...middleware));
+
 hack.store = createStore(
   (state: RootState, action: AnyAction) => {
     const res = reducer(state, action);
@@ -43,7 +45,7 @@ hack.store = createStore(
     return res;
   },
   initialState,
-  compose(...enhancers)
+  storeEnhancer as any
 ) as ChromeStore;
 
 hack.store.watcher = watcher;

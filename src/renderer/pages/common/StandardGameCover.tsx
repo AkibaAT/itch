@@ -101,7 +101,7 @@ class StandardGameCover extends React.PureComponent<Props> {
       ...restProps
     } = this.props;
 
-    let coverContent: JSX.Element | null = null;
+    let coverContent: React.ReactElement | null = null;
 
     if (game) {
       coverContent = (
@@ -164,7 +164,7 @@ interface Props {
   className?: string;
   showGifMarker?: boolean;
   disableLink?: boolean;
-  children?: JSX.Element | JSX.Element[];
+  children?: React.ReactElement | React.ReactElement[];
 }
 
 export default hook()(StandardGameCover);

@@ -28,7 +28,6 @@ const BrowserMain = styled.div`
 `;
 
 const WebviewShell = styled.div`
-  background-color: ${(props) => props.theme.breadBackground};
   position: absolute;
   top: 0;
   right: 0;
@@ -41,7 +40,6 @@ const WebviewShell = styled.div`
     right: 0;
     bottom: 0;
     left: 0;
-    background: white;
   }
 `;
 
@@ -74,7 +72,7 @@ class BrowserPage extends React.PureComponent<Props> {
                 partition={partition}
                 useragent={useragent.userAgent()}
                 enableremotemodule="false"
-                webpreferences="worldSafeExecuteJavaScript"
+                webpreferences="worldSafeExecuteJavaScript,nativeWindowOpen=yes,contextIsolation=yes"
               />
             )}
           </WebviewShell>

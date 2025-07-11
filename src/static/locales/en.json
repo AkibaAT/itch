@@ -335,6 +335,10 @@
   "preferences.advanced.disable_browser": "Disable web browser",
   "preferences.advanced.disable_hardware_acceleration":
     "Disable hardware accelerations (resolves some crashes on Linux)",
+  "preferences.advanced.fix_external_dark_mode":
+    "Fix dark mode CSS variables for external websites",
+  "preferences.advanced.allowed_domains":
+    "Allowed domains for browser navigation (comma-separated, use .domain.com for subdomains)",
   "preferences.proxy_server_address": "HTTPS Proxy",
   "preferences.proxy_server_source.direct": "Direct (no proxy)",
   "pick_install_upload.title": "Multiple downloads are available for {{title}}",

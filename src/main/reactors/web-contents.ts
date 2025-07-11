@@ -34,7 +34,7 @@ function withWebContents<T>(
   return null;
 }
 
-function loadURL(wc: WebContents, url: string): boolean {
+function loadURL(wc: WebContents, url: string, preferences?: any): boolean {
   if (ITCH_URL_RE.test(url)) {
     return true;
   }
@@ -42,11 +42,9 @@ function loadURL(wc: WebContents, url: string): boolean {
   // Because of restrictions elsewhere, this likely only
   // occurs if the most recent url in a given tab was an
   // external page back when the app permitted that
-  const parsedUrl = new URL(url);
-  if (
-    parsedUrl.origin.endsWith(".itch.io") ||
-    parsedUrl.origin.endsWith("/itch.io")
-  ) {
+  const { isUrlAllowed } = require("common/constants/allowed-domains");
+
+  if (isUrlAllowed(url, preferences)) {
     wc.loadURL(url);
     return true;
   }
@@ -73,7 +71,7 @@ export default function (watcher: Watcher) {
 
     logger.debug(`Loading url '${initialURL}'`);
     await hookWebContents(store, wind, tab, wc);
-    loadURL(wc, initialURL);
+    loadURL(wc, initialURL, rs.preferences);
   });
 
   watcher.on(actions.tabLosingWebContents, async (store, action) => {
@@ -244,7 +242,7 @@ export default function (watcher: Watcher) {
 
     withWebContents(store, wind, tab, (wc) => {
       const url = Space.fromState(rs, wind, tab).url();
-      loadURL(wc, url);
+      loadURL(wc, url, rs.preferences);
     });
   });
 
@@ -260,7 +258,7 @@ export default function (watcher: Watcher) {
         logger.debug(
           `WebContents has\n--> ${webUrl}\ntab evolved to\n--> ${url}\nlet's load`
         );
-        loadURL(wc, url);
+        loadURL(wc, url, store.getState().preferences);
       } else {
         logger.debug(
           `WebContents has\n--> ${webUrl}\ntab evolved to\n--> ${url}\nwe're good.`
@@ -351,7 +349,7 @@ async function hookWebContents(
   wc.setWindowOpenHandler(({ url }) => {
     logger.debug(`new-window fired for ${url}`);
 
-    if (!loadURL(wc, url)) {
+    if (!loadURL(wc, url, store.getState().preferences)) {
       // url wasn't handled by the current web-contents, open
       // in external browser
       store.dispatch(actions.openInExternalBrowser({ url: url }));

@@ -89,7 +89,7 @@ class SwitchVersionCave extends React.PureComponent<Props> {
   render() {
     const { builds } = this.props.modal.widgetParams;
 
-    const buildElements: JSX.Element[] = [];
+    const buildElements: React.ReactElement[] = [];
     if (isEmpty(builds)) {
       buildElements.push(<>{T(["prompt.revert.no_other_version"])}</>);
     } else {
@@ -120,7 +120,7 @@ class SwitchVersionCave extends React.PureComponent<Props> {
     );
   }
 
-  renderBuild(index: number, b: Build): JSX.Element {
+  renderBuild(index: number, b: Build): React.ReactElement {
     const version = b.userVersion || b.version;
     const updatedAt = b.updatedAt;
 

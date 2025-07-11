@@ -4,8 +4,8 @@ import styled, * as styles from "renderer/styles";
 interface Props {
   onClick?: React.EventHandler<React.MouseEvent<HTMLButtonElement>>;
   onContextMenu?: React.EventHandler<React.MouseEvent<HTMLButtonElement>>;
-  label?: JSX.Element | string;
-  children?: string | JSX.Element | (string | JSX.Element)[];
+  label?: React.ReactElement | string;
+  children?: string | React.ReactElement | (string | React.ReactElement)[];
   className?: string;
 }
 

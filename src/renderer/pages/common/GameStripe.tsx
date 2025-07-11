@@ -73,7 +73,7 @@ interface GenericProps<Params, Item> {
   title: LocalizedString;
   href: string;
   params: Params;
-  renderTitleExtras?: () => JSX.Element;
+  renderTitleExtras?: () => React.ReactElement;
   getGame: (item: Item) => Game;
 
   dispatch: Dispatch;
@@ -131,7 +131,7 @@ export function makeGameStripe<Params, Res extends FetchRes<any>>(
       </>
     ));
 
-    renderTitle(loading: boolean, result: Res, error: any): JSX.Element {
+    renderTitle(loading: boolean, result: Res, error: any): React.ReactElement {
       const {
         linkId,
         href,
@@ -164,7 +164,7 @@ export function makeGameStripe<Params, Res extends FetchRes<any>>(
       return <ErrorState error={error} />;
     }
 
-    renderItems(result: Res): JSX.Element {
+    renderItems(result: Res): React.ReactElement {
       if (!result) {
         return null;
       }
@@ -196,7 +196,7 @@ export function makeGameStripe<Params, Res extends FetchRes<any>>(
       );
     }
 
-    renderEmpty(): JSX.Element {
+    renderEmpty(): React.ReactElement {
       const { dispatch } = this.props;
       return (
         <>
@@ -207,7 +207,7 @@ export function makeGameStripe<Params, Res extends FetchRes<any>>(
       );
     }
 
-    renderViewAll(): JSX.Element {
+    renderViewAll(): React.ReactElement {
       return (
         <ViewAll href={this.props.href}>{T(["game_stripe.view_all"])}</ViewAll>
       );
@@ -241,7 +241,7 @@ export function makeStripeCallbacks<Params, Res extends FetchRes<any>>(
   };
 }
 
-function renderNoop(): JSX.Element {
+function renderNoop(): React.ReactElement {
   return null;
 }
 

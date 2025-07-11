@@ -101,8 +101,8 @@ interface Props {
   primary?: boolean;
   hint?: LocalizedString;
   icon?: string;
-  iconComponent?: JSX.Element;
-  label?: JSX.Element | string;
+  iconComponent?: React.ReactElement;
+  label?: React.ReactElement | string;
   wide?: boolean;
   fat?: boolean;
   disabled?: boolean;

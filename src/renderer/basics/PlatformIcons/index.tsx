@@ -40,5 +40,5 @@ export default PlatformIcons;
 interface Props {
   target: PlatformHolder;
   className?: string;
-  before?: () => JSX.Element;
+  before?: () => React.ReactElement;
 }

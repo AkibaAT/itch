@@ -76,7 +76,7 @@ class StatusBar extends React.PureComponent<Props> {
   render() {
     const { statusMessages, dispatch } = this.props;
 
-    let children: JSX.Element[] = [];
+    let children: React.ReactElement[] = [];
     let active = true;
     let busy = false;
     let callback = (): any => null;

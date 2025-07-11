@@ -6,7 +6,7 @@ import { hookWithProps } from "renderer/hocs/hook";
 interface Props {
   game: Game;
   caveId?: string;
-  render: (status: GameStatus) => JSX.Element;
+  render: (status: GameStatus) => React.ReactElement;
 
   status: GameStatus;
 }

@@ -79,7 +79,7 @@ const emptyObj = {};
 class TitleBar extends React.PureComponent<Props> {
   render() {
     const { tab, macos, tabInstance } = this.props;
-    const iw = ((window as unknown) as ExtendedWindow).windSpec;
+    const iw = (window as unknown as ExtendedWindow).windSpec;
     const secondary = iw.role == "secondary";
 
     const sp = Space.fromInstance(tab, tabInstance);
@@ -121,7 +121,7 @@ class TitleBar extends React.PureComponent<Props> {
       return null;
     }
 
-    const iw = ((window as unknown) as ExtendedWindow).windSpec;
+    const iw = (window as unknown as ExtendedWindow).windSpec;
     const secondary = iw.role == "secondary";
 
     return (
@@ -200,10 +200,20 @@ interface Props {
 }
 
 export default hookWithProps(TitleBar)((map) => ({
-  tabInstance: map(
-    (rs, props) => ambientWindState(rs).tabInstances[props.tab] || emptyObj
-  ),
-  maximized: map((rs, props) => rs.winds[ambientWind()].native.maximized),
-  focused: map((rs, props) => rs.winds[ambientWind()].native.focused),
+  tabInstance: map((rs, props) => {
+    const windState = ambientWindState(rs);
+    if (!windState || !windState.tabInstances) {
+      return emptyObj;
+    }
+    return windState.tabInstances[props.tab] || emptyObj;
+  }),
+  maximized: map((rs, props) => {
+    const wind = rs.winds[ambientWind()];
+    return wind ? wind.native.maximized : false;
+  }),
+  focused: map((rs, props) => {
+    const wind = rs.winds[ambientWind()];
+    return wind ? wind.native.focused : false;
+  }),
   macos: map((rs, props) => rs.system.macos),
 }))(TitleBar);

@@ -266,7 +266,7 @@ class LoginForm extends React.PureComponent<Props, State> {
     });
   };
 
-  renderError(): JSX.Element {
+  renderError(): React.ReactElement {
     const err = this.props.error;
     if (!err) {
       return null;
@@ -283,10 +283,14 @@ class LoginForm extends React.PureComponent<Props, State> {
   }
 
   username: HTMLInputElement | null = null;
-  gotUsernameField = (el: HTMLInputElement) => (this.username = el);
+  gotUsernameField = (el: HTMLInputElement) => {
+    this.username = el;
+  };
 
   password: HTMLInputElement | null = null;
-  gotPasswordField = (el: HTMLInputElement) => (this.password = el);
+  gotPasswordField = (el: HTMLInputElement) => {
+    this.password = el;
+  };
 
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

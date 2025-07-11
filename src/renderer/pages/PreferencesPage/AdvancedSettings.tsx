@@ -8,6 +8,7 @@ import { hook } from "renderer/hocs/hook";
 import BrothComponents from "renderer/pages/PreferencesPage/BrothComponents";
 import Checkbox from "renderer/pages/PreferencesPage/Checkbox";
 import ProxySettings from "renderer/pages/PreferencesPage/ProxySettings";
+import TextInput from "renderer/pages/PreferencesPage/TextInput";
 import styled, * as styles from "renderer/styles";
 import { T } from "renderer/t";
 
@@ -60,6 +61,11 @@ class AdvancedSettings extends React.PureComponent<Props> {
           <Checkbox
             name="disableHardwareAcceleration"
             label={T(["preferences.advanced.disable_hardware_acceleration"])}
+          />
+          <TextInput
+            name="allowedDomains"
+            label={T(["preferences.advanced.allowed_domains"])}
+            placeholder="example.com,.mydomain.net,localhost:8080"
           />
         </div>
       </>

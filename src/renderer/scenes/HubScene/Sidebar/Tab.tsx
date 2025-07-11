@@ -14,21 +14,33 @@ import {
 } from "main/reactors/downloads/getters";
 import React from "react";
 import { injectIntl, IntlShape } from "react-intl";
-import { SortableElement } from "react-sortable-hoc";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { hookWithProps } from "renderer/hocs/hook";
 import modals from "renderer/modals";
 import { size } from "underscore";
 import Item from "renderer/scenes/HubScene/Sidebar/Item";
 
 interface SortableHubSidebarItemProps {
-  props: any & {
-    tab: string;
-  };
+  id: string;
+  props: any;
 }
 
-const SortableItem = SortableElement((props: SortableHubSidebarItemProps) => {
-  return <Item {...props.props} />;
-});
+const SortableItem = ({ id, props }: SortableHubSidebarItemProps) => {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <Item {...props} />
+    </div>
+  );
+};
 
 class Tab extends React.PureComponent<Props> {
   onClick = () => {
@@ -106,7 +118,7 @@ class Tab extends React.PureComponent<Props> {
     };
 
     if (sortable) {
-      return <SortableItem key={tab} index={index} props={props} />;
+      return <SortableItem key={tab} id={tab} props={props} />;
     } else {
       return <Item key={tab} {...props} />;
     }

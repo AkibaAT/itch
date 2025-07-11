@@ -35,6 +35,6 @@ export default Label;
 
 interface Props {
   active?: boolean;
-  children?: JSX.Element | JSX.Element[];
+  children?: React.ReactElement | React.ReactElement[];
   className?: string;
 }

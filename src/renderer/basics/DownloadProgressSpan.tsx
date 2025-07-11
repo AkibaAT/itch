@@ -17,7 +17,7 @@ export default function DownloadProgressSpan({
   downloadsPaused,
   onlyBPS,
   onlyETA,
-}: Props): JSX.Element {
+}: Props): React.ReactElement {
   if (downloadsPaused) {
     return <>{T(["grid.item.downloads_paused"])}</>;
   }

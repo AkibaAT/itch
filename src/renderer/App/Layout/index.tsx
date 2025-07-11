@@ -100,7 +100,7 @@ class Layout extends React.PureComponent<Props> {
     }
   }
 
-  renderReactHint(): JSX.Element {
+  renderReactHint(): React.ReactElement {
     return <ReactHint events onRenderContent={this.renderReactHintContent} />;
   }
 
@@ -149,20 +149,12 @@ interface Props {
 export default injectIntl(
   hook((map) => ({
     maximized: map((rs) => {
-      const wind = rs.winds[ambientWind()];
-      if (wind) {
-        return wind.native.maximized;
-      } else {
-        return false;
-      }
+      const wind = rs.winds && rs.winds[ambientWind()];
+      return wind ? wind.native.maximized : false;
     }),
     focused: map((rs) => {
-      const wind = rs.winds[ambientWind()];
-      if (wind) {
-        return wind.native.focused;
-      } else {
-        return false;
-      }
+      const wind = rs.winds && rs.winds[ambientWind()];
+      return wind ? wind.native.focused : false;
     }),
     ready: map((rs) => !!(rs.setup.done && rs.profile.profile)),
     profile: map((rs) => rs.profile.profile),

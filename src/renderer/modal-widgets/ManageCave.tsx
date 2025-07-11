@@ -103,7 +103,7 @@ class ManageCave extends React.PureComponent<Props> {
     return <ManageCaveDiv>{this.renderCave()}</ManageCaveDiv>;
   }
 
-  renderCave(): JSX.Element {
+  renderCave(): React.ReactElement {
     const { cave } = this.props.modal.widgetParams;
     const { game } = cave;
 
@@ -307,7 +307,7 @@ interface Props extends ModalWidgetProps<ManageCaveParams, ManageCaveResponse> {
 
 export default hook()(ManageCave);
 
-function formatUpload(upload: Upload): JSX.Element {
+function formatUpload(upload: Upload): React.ReactElement {
   return (
     <>
       <UploadIcon upload={upload} />

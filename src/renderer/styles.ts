@@ -136,7 +136,6 @@ export const theme = {
 export type Theme = typeof theme;
 
 import * as sc from "styled-components";
-import { ThemedStyledComponentsModule } from "styled-components";
 const {
   default: styled,
   css,

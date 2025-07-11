@@ -13,7 +13,7 @@ class FeaturedPage extends React.PureComponent<Props> {
       url: urls.itchio,
     });
 
-    return null as JSX.Element;
+    return null as React.ReactElement;
   }
 }
 

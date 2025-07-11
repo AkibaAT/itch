@@ -14,8 +14,65 @@ if (process.env.NODE_ENV === "production") {
 }
 
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
+
+class ErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean; error: any }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: any) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: any, errorInfo: any) {
+    console.error("React Error Boundary caught an error:", error, errorInfo);
+    console.error("Error stack:", error.stack);
+    console.error("Component stack:", errorInfo.componentStack);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div
+          style={{
+            padding: "20px",
+            color: "white",
+            backgroundColor: "#333",
+            fontFamily: "monospace",
+          }}
+        >
+          <h1>React Error Occurred</h1>
+          <p>
+            <strong>Error:</strong>{" "}
+            {this.state.error?.message || "Unknown error"}
+          </p>
+          <p>
+            <strong>Type:</strong> {this.state.error?.name || "Unknown"}
+          </p>
+          <details style={{ marginTop: "10px" }}>
+            <summary>Stack Trace</summary>
+            <pre
+              style={{ fontSize: "12px", overflow: "auto", maxHeight: "300px" }}
+            >
+              {this.state.error?.stack || "No stack trace available"}
+            </pre>
+          </details>
+          <p style={{ marginTop: "10px" }}>
+            Check the console for more details.
+          </p>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
 
 import store from "renderer/store";
 
@@ -25,29 +82,48 @@ import { ExtendedWindow } from "common/types";
 import { ambientWind } from "common/util/navigation";
 
 let appNode: Element | null;
+let root: any = null;
 
 function render(RealApp: typeof App) {
-  document.querySelector("body")!.classList.remove("loading");
-  appNode = document.querySelector("#app");
+  try {
+    document.querySelector("body")!.classList.remove("loading");
+    appNode = document.querySelector("#app");
 
-  ReactDOM.render(
-    <Provider store={store}>
-      <RealApp />
-    </Provider>,
-    appNode
-  );
+    if (!appNode) {
+      console.error("Could not find #app element");
+      return;
+    }
+
+    if (!root) {
+      root = createRoot(appNode);
+    }
+
+    const rootComponent = (
+      <ErrorBoundary>
+        <Provider store={store}>
+          <RealApp />
+        </Provider>
+      </ErrorBoundary>
+    );
+
+    root.render(rootComponent);
+  } catch (error) {
+    console.error("Error in render function:", error);
+    console.error("Error stack:", error.stack);
+  }
 }
 
 window.addEventListener("beforeunload", () => {
-  if (appNode) {
-    ReactDOM.unmountComponentAtNode(appNode);
+  if (root) {
+    root.unmount();
+    root = null;
     appNode = null;
   }
 });
 
 async function start() {
   const opts = parseQueryString(location.search.replace(/^\?/, ""));
-  const extWindow = (window as unknown) as ExtendedWindow;
+  const extWindow = window as unknown as ExtendedWindow;
   extWindow.windSpec = {
     wind: String(opts.wind),
     role: String(opts.role) as any,

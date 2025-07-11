@@ -61,7 +61,7 @@ class BlockingOperation extends React.PureComponent<Props> {
 
     const { message, icon, progressInfo } = blockingOperation;
     const hasError = icon === "error";
-    let iconElement: JSX.Element;
+    let iconElement: React.ReactElement;
     if (hasError) {
       iconElement = <Icon icon={icon} />;
     } else {

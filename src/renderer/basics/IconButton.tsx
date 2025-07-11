@@ -56,7 +56,7 @@ const IconButtonStyled = styled.button`
 `;
 
 interface Props {
-  icon: string | JSX.Element;
+  icon: string | React.ReactElement;
   disabled?: boolean;
   className?: string;
   id?: string;

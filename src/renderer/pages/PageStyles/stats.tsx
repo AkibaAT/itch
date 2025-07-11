@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "renderer/styles";
 
 export const StatBox = styled.div`
   padding: 0 4px;

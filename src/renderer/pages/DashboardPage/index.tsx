@@ -25,14 +25,8 @@ const ProfileGameSeries = makeGameSeries(messages.FetchProfileGames);
 
 class DashboardPage extends React.PureComponent<Props> {
   render() {
-    const {
-      profile,
-      sortBy,
-      sortDir,
-      search,
-      visibility,
-      paidStatus,
-    } = this.props;
+    const { profile, sortBy, sortDir, search, visibility, paidStatus } =
+      this.props;
 
     return (
       <Page>
@@ -80,7 +74,7 @@ class DashboardPage extends React.PureComponent<Props> {
     </>
   ));
 
-  renderPaidStatusFilter(): JSX.Element {
+  renderPaidStatusFilter(): React.ReactElement {
     return (
       <FilterGroup>
         <FilterOption
@@ -97,7 +91,7 @@ class DashboardPage extends React.PureComponent<Props> {
     );
   }
 
-  renderVisibilityFilter(): JSX.Element {
+  renderVisibilityFilter(): React.ReactElement {
     return (
       <>
         <FilterGroup>

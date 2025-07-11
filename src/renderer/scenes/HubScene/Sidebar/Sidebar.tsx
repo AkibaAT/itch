@@ -6,7 +6,21 @@ import {
   ambientWindState,
 } from "common/util/navigation";
 import React from "react";
-import { arrayMove, SortableContainer } from "react-sortable-hoc";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import Filler from "renderer/basics/Filler";
 import Icon from "renderer/basics/Icon";
 import IconButton from "renderer/basics/IconButton";
@@ -56,11 +70,6 @@ const SidebarItems = styled.div`
   }
 `;
 
-interface SortEndParams {
-  oldIndex: number;
-  newIndex: number;
-}
-
 interface SortableContainerParams {
   items: string[];
   sidebarProps: Props;
@@ -70,21 +79,23 @@ const SortableListContainer = styled.div`
   overflow-y: auto;
 `;
 
-const SortableList = SortableContainer((params: SortableContainerParams) => {
+const SortableList = (params: SortableContainerParams) => {
   const { sidebarProps, items } = params;
   const currentTab = sidebarProps.tab;
 
   return (
     <SortableListContainer>
-      {map(items, (tab, index) => {
-        const active = currentTab === tab;
-        return (
-          <Tab key={tab} tab={tab} active={active} index={index} sortable />
-        );
-      })}
+      <SortableContext items={items} strategy={verticalListSortingStrategy}>
+        {map(items, (tab, index) => {
+          const active = currentTab === tab;
+          return (
+            <Tab key={tab} tab={tab} active={active} index={index} sortable />
+          );
+        })}
+      </SortableContext>
     </SortableListContainer>
   );
-});
+};
 
 class Sidebar extends React.PureComponent<Props, State> {
   constructor(props: Sidebar["props"], context: any) {
@@ -112,19 +123,25 @@ class Sidebar extends React.PureComponent<Props, State> {
     );
   };
 
-  onSortEnd = (params: SortEndParams) => {
-    const { oldIndex, newIndex } = params;
-    this.setState({
-      openTabs: arrayMove(this.state.openTabs, oldIndex, newIndex),
-    });
-    const { dispatch } = this.props;
-    dispatch(
-      actions.moveTab({
-        wind: ambientWind(),
-        before: oldIndex,
-        after: newIndex,
-      })
-    );
+  onDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      const oldIndex = this.state.openTabs.indexOf(active.id as string);
+      const newIndex = this.state.openTabs.indexOf(over?.id as string);
+
+      this.setState({
+        openTabs: arrayMove(this.state.openTabs, oldIndex, newIndex),
+      });
+      const { dispatch } = this.props;
+      dispatch(
+        actions.moveTab({
+          wind: ambientWind(),
+          before: oldIndex,
+          after: newIndex,
+        })
+      );
+    }
   };
 
   render() {
@@ -142,7 +159,14 @@ class Sidebar extends React.PureComponent<Props, State> {
     );
   }
 
-  renderTabs(): JSX.Element {
+  renderTabs(): React.ReactElement {
+    const sensors = useSensors(
+      useSensor(PointerSensor),
+      useSensor(KeyboardSensor, {
+        coordinateGetter: sortableKeyboardCoordinates,
+      })
+    );
+
     return (
       <>
         <SidebarItems>
@@ -165,19 +189,22 @@ class Sidebar extends React.PureComponent<Props, State> {
             />
           </SidebarSection>
 
-          <SortableList
-            items={this.state.openTabs}
-            sidebarProps={this.props}
-            onSortEnd={this.onSortEnd}
-            distance={5}
-            lockAxis="y"
-          />
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={this.onDragEnd}
+          >
+            <SortableList
+              items={this.state.openTabs}
+              sidebarProps={this.props}
+            />
+          </DndContext>
         </SidebarItems>
       </>
     );
   }
 
-  renderShortcuts(): JSX.Element {
+  renderShortcuts(): React.ReactElement {
     return (
       <>
         <SidebarItems>
@@ -196,7 +223,7 @@ class Sidebar extends React.PureComponent<Props, State> {
     );
   }
 
-  renderShortcutsRest(): JSX.Element {
+  renderShortcutsRest(): React.ReactElement {
     return (
       <>
         <div style={{ flexGrow: 1 }} />
@@ -213,7 +240,11 @@ class Sidebar extends React.PureComponent<Props, State> {
     );
   }
 
-  renderLink(url: string, icon: string, label: LocalizedString): JSX.Element {
+  renderLink(
+    url: string,
+    icon: string,
+    label: LocalizedString
+  ): React.ReactElement {
     return (
       <SidebarSection>
         <a
@@ -255,12 +286,25 @@ interface State {
 export default hook((map) => ({
   me: map((rs) => rs.profile.profile.user),
 
-  tab: map((rs) => ambientNavigation(rs).tab),
-  openTabs: map((rs) => ambientNavigation(rs).openTabs),
+  tab: map((rs) => {
+    const nav = ambientNavigation(rs);
+    return nav ? nav.tab : "";
+  }),
+  openTabs: map((rs) => {
+    const nav = ambientNavigation(rs);
+    return nav ? nav.openTabs : [];
+  }),
   enableTabs: map((rs) => rs.preferences.enableTabs),
   url: map((rs) => {
     const ws = ambientWindState(rs);
-    const ti = ws.tabInstances[ambientNavigation(rs).tab];
+    const nav = ambientNavigation(rs);
+    if (!ws || !nav || !ws.tabInstances) {
+      return "";
+    }
+    const ti = ws.tabInstances[nav.tab];
+    if (!ti || !ti.history || !ti.history[ti.currentIndex]) {
+      return "";
+    }
     return ti.history[ti.currentIndex].url;
   }),
 }))(Sidebar);

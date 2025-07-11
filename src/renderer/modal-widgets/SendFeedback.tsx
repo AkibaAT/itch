@@ -466,7 +466,7 @@ ${log}
     );
   };
 
-  renderSystem = (input: any): JSX.Element => {
+  renderSystem = (input: any): React.ReactElement => {
     if (Array.isArray(input)) {
       const arr = input as any[];
       return (

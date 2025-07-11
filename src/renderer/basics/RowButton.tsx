@@ -61,11 +61,11 @@ const RowButtonStyled = styled.button`
 `;
 
 const Spacer = styled.div`
-  min-width: 8px;
+  min-width: 12px;
   flex-shrink: 0;
 
   &.large {
-    min-width: 16px;
+    min-width: 20px;
   }
 `;
 
@@ -74,8 +74,8 @@ interface Props {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   hint?: string;
   icon?: string;
-  iconComponent?: JSX.Element;
-  label?: JSX.Element | string;
+  iconComponent?: React.ReactElement;
+  label?: React.ReactElement | string;
   id?: string;
   children?: React.ReactNode;
 }

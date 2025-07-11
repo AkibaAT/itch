@@ -380,7 +380,7 @@ class DownloadRow extends React.PureComponent<Props> {
     );
   }
 
-  renderTitle(): JSX.Element {
+  renderTitle(): React.ReactElement {
     const { game } = this.props.item;
     return (
       <>
@@ -392,11 +392,11 @@ class DownloadRow extends React.PureComponent<Props> {
     );
   }
 
-  renderDetails(): JSX.Element {
+  renderDetails(): React.ReactElement {
     return <div className="control--details">{this.renderUpload()}</div>;
   }
 
-  renderErrorOrTimestamp(): JSX.Element {
+  renderErrorOrTimestamp(): React.ReactElement {
     const { error, finishedAt, reason } = this.props.item;
 
     if (!error) {
@@ -424,7 +424,7 @@ class DownloadRow extends React.PureComponent<Props> {
     );
   }
 
-  renderUpload(): JSX.Element {
+  renderUpload(): React.ReactElement {
     const { item } = this.props;
     const { upload } = item;
 
@@ -448,7 +448,7 @@ class DownloadRow extends React.PureComponent<Props> {
     return this.formatOperation(operation);
   }
 
-  formatOperation(op: Operation): string | JSX.Element {
+  formatOperation(op: Operation): string | React.ReactElement {
     if (op.type === OperationType.Download) {
       const { item } = this.props;
       const reasonText = formatReason(op.reason);

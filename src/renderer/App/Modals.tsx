@@ -465,7 +465,7 @@ class Modals extends React.PureComponent<Props, State> {
     }
   };
 
-  renderCover(modal: Modal): JSX.Element | null {
+  renderCover(modal: Modal): React.ReactElement | null {
     const { coverUrl, stillCoverUrl } = modal;
 
     if (!(stillCoverUrl || coverUrl)) {
@@ -600,7 +600,7 @@ class Modals extends React.PureComponent<Props, State> {
     return onClick;
   }
 
-  renderWidget(widget: string, modal: Modal): JSX.Element {
+  renderWidget(widget: string, modal: Modal): React.ReactElement {
     const Component = modalWidgets[widget];
     if (!Component) {
       return null;
@@ -626,7 +626,7 @@ interface State {
 export default hook((map) => ({
   modal: map((rs) => {
     const s = ambientWindState(rs);
-    if (s) {
+    if (s && s.modals && s.modals.length > 0) {
       return s.modals[0];
     } else {
       return undefined;

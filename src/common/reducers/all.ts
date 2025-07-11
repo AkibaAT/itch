@@ -17,7 +17,7 @@ import broth from "common/reducers/broth";
 import butlerd from "common/reducers/butlerd";
 import winds from "common/reducers/winds";
 
-const reducer = combineReducers<RootState>({
+const reducer = combineReducers({
   system,
   setup,
   profile,

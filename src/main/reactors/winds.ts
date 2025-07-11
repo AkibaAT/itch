@@ -114,11 +114,11 @@ async function createRootWindow(store: Store) {
 
   hookNativeWindow(store, wind, nativeWindow);
 
-  nativeWindow.on("maximize", (e: any) => {
+  (nativeWindow as any).on("maximize", (e: any) => {
     config.set(MAXIMIZED_CONFIG_KEY, true);
   });
 
-  nativeWindow.on("unmaximize", (e: any) => {
+  (nativeWindow as any).on("unmaximize", (e: any) => {
     config.set(MAXIMIZED_CONFIG_KEY, false);
   });
 
@@ -572,12 +572,12 @@ function hookNativeWindow(
     store.dispatch(actions.windFocusChanged({ wind, focused: false }));
   });
 
-  nativeWindow.on("enter-full-screen", (e: any) => {
+  (nativeWindow as any).on("enter-full-screen", (e: any) => {
     const ns = store.getState().winds[wind].native;
     store.dispatch(actions.windFullscreenChanged({ wind, fullscreen: true }));
   });
 
-  nativeWindow.on("leave-full-screen", (e: any) => {
+  (nativeWindow as any).on("leave-full-screen", (e: any) => {
     const ns = store.getState().winds[wind].native;
     store.dispatch(actions.windFullscreenChanged({ wind, fullscreen: false }));
   });
@@ -593,14 +593,14 @@ function hookNativeWindow(
     );
   });
 
-  nativeWindow.on("maximize", (e: any) => {
+  (nativeWindow as any).on("maximize", (e: any) => {
     const ns = store.getState().winds[wind].native;
     if (!ns.maximized) {
       store.dispatch(actions.windMaximizedChanged({ wind, maximized: true }));
     }
   });
 
-  nativeWindow.on("unmaximize", (e: any) => {
+  (nativeWindow as any).on("unmaximize", (e: any) => {
     const ns = store.getState().winds[wind].native;
     if (ns.maximized) {
       store.dispatch(actions.windMaximizedChanged({ wind, maximized: false }));
@@ -636,11 +636,11 @@ function hookNativeWindow(
     store.dispatch(actions.windBoundsChanged({ wind, bounds: windowBounds }));
   }, 2000);
 
-  nativeWindow.on("move", (e: any) => {
+  (nativeWindow as any).on("move", (e: any) => {
     debouncedBounds();
   });
 
-  nativeWindow.on("resize", (e: any) => {
+  (nativeWindow as any).on("resize", (e: any) => {
     debouncedBounds();
   });
 
@@ -697,7 +697,7 @@ function hookNativeWindow(
     }
   });
 
-  nativeWindow.on("closed", (e: any) => {
+  (nativeWindow as any).on("closed", (e: any) => {
     store.dispatch(actions.windClosed({ wind }));
   });
 

@@ -16,7 +16,7 @@ import {
   ipcMain,
   protocol,
   session,
-  App,
+  nativeTheme,
   BrowserWindow,
   IpcMainEvent,
   OpenDialogOptions,
@@ -29,6 +29,10 @@ import { mainLogger } from "main/logger";
 import { stopForwarding } from "@goosewobbler/electron-redux";
 
 const appUserModelId = "com.squirrel.itch.itch";
+
+// Force dark mode preference for all web content
+nativeTheme.themeSource = "dark";
+app.commandLine.appendSwitch("force-dark-mode", "enabled");
 
 const registerSync = (
   syncHandlers: SyncIpcHandlers,
@@ -199,12 +203,11 @@ export function main() {
       } // no checks on main window
 
       contents.on("will-navigate", (e, navigationUrl) => {
+        const { isOriginAllowed } = require("common/constants/allowed-domains");
         const parsedUrl = new URL(navigationUrl);
+        const preferences = store.getState().preferences;
 
-        if (
-          !parsedUrl.origin.endsWith(".itch.io") &&
-          !parsedUrl.origin.endsWith("/itch.io")
-        ) {
+        if (!isOriginAllowed(parsedUrl.origin, preferences)) {
           e.preventDefault();
           store.dispatch(actions.openInExternalBrowser({ url: navigationUrl }));
         }

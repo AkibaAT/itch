@@ -21,20 +21,21 @@ import { RootState, Store } from "common/types";
 import { mainLogger } from "main/logger";
 import { syncMain } from "@goosewobbler/electron-redux";
 
-const crashGetter = (store: MiddlewareAPI<any>) => (
-  next: (action: any) => any
-) => (action: any) => {
-  try {
-    if (action && !action.type) {
-      throw new Error(
-        `refusing to dispatch action with null type: ${JSON.stringify(action)}`
-      );
+const crashGetter =
+  (store: MiddlewareAPI<any>) =>
+  (next: (action: any) => any) =>
+  (action: any) => {
+    try {
+      if (action && !action.type) {
+        throw new Error(
+          `refusing to dispatch action with null type: ${JSON.stringify(action)}`
+        );
+      }
+      return next(action);
+    } catch (e) {
+      console.log(`Uncaught redux: for action ${action.type}: ${e.stack}`);
     }
-    return next(action);
-  } catch (e) {
-    console.log(`Uncaught redux: for action ${action.type}: ${e.stack}`);
-  }
-};
+  };
 
 const middleware: Middleware[] = [];
 middleware.push(crashGetter);
@@ -66,9 +67,12 @@ if (beChatty) {
 let watcher = getWatcher(mainLogger);
 
 const initialState = {} as any;
-const enhancers = [syncMain, applyMiddleware(...middleware)];
 
 const hack = { store: null };
+
+// Create store with Redux 4 and electron-redux
+const storeEnhancer = compose(syncMain, applyMiddleware(...middleware));
+
 hack.store = createStore(
   (state: RootState, action: AnyAction) => {
     const res = reducer(state, action);
@@ -76,7 +80,7 @@ hack.store = createStore(
     return res;
   },
   initialState,
-  compose(...enhancers)
+  storeEnhancer as any
 ) as Store;
 
 export default hack.store;

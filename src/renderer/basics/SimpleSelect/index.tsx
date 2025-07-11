@@ -145,7 +145,7 @@ const searchClearThreshold = 2000; // 2 seconds
 const keyboardFocusTimeout = 250;
 
 export default class SimpleSelect<
-  OptionType extends BaseOptionType
+  OptionType extends BaseOptionType,
 > extends React.PureComponent<Props<OptionType>, State<OptionType>> {
   constructor(props: Props<OptionType>) {
     super(props);
@@ -328,7 +328,7 @@ export default class SimpleSelect<
   getValueForWrapper(el: HTMLElement) {
     let dataValue = JSON.parse(el.dataset.value) as any;
     const { options, onChange } = this.props;
-    return findWhere(options, { value: dataValue });
+    return findWhere(options, { value: dataValue } as any);
   }
 
   onToggle = () => {

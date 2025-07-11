@@ -34,8 +34,8 @@ export interface BaseSeriesProps<Params, Item, Record> {
   getRecord: (item: Item) => Record;
   getKey?: (item: Item) => any;
 
-  renderMainFilters?: () => JSX.Element;
-  renderExtraFilters?: () => JSX.Element;
+  renderMainFilters?: () => React.ReactElement;
+  renderExtraFilters?: () => React.ReactElement;
 }
 
 interface GenericProps<Params, Item, Record, ExtraProps>
@@ -83,7 +83,7 @@ export function makeSeries<
   Params,
   Res extends FetchRes<any>,
   Record,
-  ExtraProps
+  ExtraProps,
 >(rc: RequestCreator<Params, Res>) {
   const Call = butlerCaller(rc);
 
@@ -194,7 +194,7 @@ export function makeSeries<
       return <ErrorState error={error} />;
     }
 
-    renderItems(result: Res, loading: boolean): JSX.Element {
+    renderItems(result: Res, loading: boolean): React.ReactElement {
       if (!hasItems(result)) {
         if (loading) {
           return null;
@@ -204,13 +204,8 @@ export function makeSeries<
       }
       const { items } = result;
 
-      const {
-        fallbackGetKey,
-        getKey,
-        getRecord,
-        RecordComponent,
-        extraProps,
-      } = this.props;
+      const { fallbackGetKey, getKey, getRecord, RecordComponent, extraProps } =
+        this.props;
 
       let doneSet = new Set<any>();
       return (
@@ -238,7 +233,7 @@ export function makeSeries<
       );
     }
 
-    renderEmpty(): JSX.Element {
+    renderEmpty(): React.ReactElement {
       return (
         <EmptyState
           bigText={_("empty_state.nothing_to_see_here")}

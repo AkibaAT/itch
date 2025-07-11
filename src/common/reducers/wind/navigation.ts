@@ -4,7 +4,7 @@ import { NavigationState, TabDataSave } from "common/types";
 
 import { actions } from "common/actions";
 import reducer from "common/reducers/reducer";
-import arrayMove from "array-move";
+const arrayMove = require("array-move").arrayMoveImmutable;
 
 const initialState: NavigationState = {
   openTabs: ["initial-tab"],

@@ -21,19 +21,21 @@ export function currentPage(tabInstance: TabInstance): TabPage | null {
 }
 
 export function windSpec(): WindSpec {
-  return ((window as unknown) as ExtendedWindow).windSpec;
+  return (window as unknown as ExtendedWindow).windSpec;
 }
 
 export function ambientWind(): string {
   return windSpec().wind;
 }
 
-export function ambientWindState(rs: RootState): WindState {
-  return rs.winds[ambientWind()];
+export function ambientWindState(rs: RootState): WindState | null {
+  const wind = ambientWind();
+  return rs.winds && rs.winds[wind] ? rs.winds[wind] : null;
 }
 
-export function ambientNavigation(rs: RootState): NavigationState {
-  return ambientWindState(rs).navigation;
+export function ambientNavigation(rs: RootState): NavigationState | null {
+  const windState = ambientWindState(rs);
+  return windState ? windState.navigation : null;
 }
 
 interface AmbientTabProps {

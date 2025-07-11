@@ -99,7 +99,7 @@ class CollectionPage extends React.PureComponent<Props> {
     dispatchTabPageUpdate(this.props, { label });
   });
 
-  renderExtraFilters = (): JSX.Element => {
+  renderExtraFilters = (): React.ReactElement => {
     return (
       <SortsAndFilters>
         <FilterGroup>

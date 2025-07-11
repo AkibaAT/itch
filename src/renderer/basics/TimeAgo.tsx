@@ -5,7 +5,7 @@ import { FormattedRelativeTime } from "react-intl";
 interface Props {
   date: Date | string;
   className?: string;
-  before?: string | JSX.Element;
+  before?: string | React.ReactElement;
 }
 
 type Unit = "second" | "minute" | "hour" | "day" | "week" | "month" | "year";

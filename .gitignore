@@ -1,5 +1,8 @@
 .env
 
+# IDEs
+/.idea
+
 # package manager stuff
 /node_modules
 /docs/node_modules

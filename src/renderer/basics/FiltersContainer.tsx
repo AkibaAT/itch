@@ -35,7 +35,7 @@ export const FiltersContainerDiv = styled.section`
 
 interface Props {
   loading: boolean;
-  children?: JSX.Element | JSX.Element[];
+  children?: React.ReactElement | React.ReactElement[];
   className?: string;
   hideAddressBar?: boolean;
 }

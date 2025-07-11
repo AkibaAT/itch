@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "renderer/styles";
-import ContainerDimensions from "react-container-dimensions";
+import useDimensions from "react-cool-dimensions";
 
 const ChartWrapper = styled.div`
   position: absolute;
@@ -23,17 +23,14 @@ class ChartGradient extends React.PureComponent<{}> {
   }
 }
 
-class Chart extends React.PureComponent<Props> {
-  render() {
-    return (
-      <ChartWrapper>
-        <ContainerDimensions>{this.renderContent}</ContainerDimensions>
-      </ChartWrapper>
-    );
-  }
+const Chart: React.FC<Props> = ({ data }) => {
+  const { observe, width, height } = useDimensions<HTMLDivElement>();
 
-  renderContent = ({ width, height }: { width: number; height: number }) => {
-    const { data } = this.props;
+  const renderContent = () => {
+    if (width === null || height === null) {
+      return null;
+    }
+
     let clipPathId = "clipPath" + Date.now();
 
     let max = 10; // enforce a minimum so we don't get NaNs
@@ -81,7 +78,9 @@ class Chart extends React.PureComponent<Props> {
       </svg>
     );
   };
-}
+
+  return <ChartWrapper ref={observe}>{renderContent()}</ChartWrapper>;
+};
 
 interface Props {
   data: number[];

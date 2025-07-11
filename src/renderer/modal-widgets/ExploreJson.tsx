@@ -3,8 +3,7 @@ import React from "react";
 import { ModalWidgetDiv } from "renderer/modal-widgets/styles";
 import styled, * as styles from "renderer/styles";
 import { ModalWidgetProps } from "common/modals";
-
-const Inspector = require("react-json-inspector");
+import { JSONTree } from "react-json-tree";
 
 class ExploreJson extends React.PureComponent<Props> {
   render() {
@@ -14,7 +13,12 @@ class ExploreJson extends React.PureComponent<Props> {
     return (
       <ModalWidgetDiv>
         <JSONTreeContainer>
-          <Inspector data={data} cacheResults={false} ignoreCase={true} />
+          <JSONTree
+            data={data}
+            theme="bright"
+            invertTheme={false}
+            shouldExpandNodeInitially={() => true}
+          />
         </JSONTreeContainer>
       </ModalWidgetDiv>
     );
@@ -24,13 +28,18 @@ class ExploreJson extends React.PureComponent<Props> {
 const JSONTreeContainer = styled.div`
   width: 100%;
   user-select: initial;
+  font-family: monospace;
+  font-size: 12px;
 
-  .json-inspector__leaf_root {
-    filter: brightness(150%);
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 1em;
   }
 
-  input[type="search"] {
-    ${styles.heavyInput};
+  li {
+    margin: 0;
+    padding: 0;
   }
 `;
 

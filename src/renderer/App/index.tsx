@@ -1,10 +1,34 @@
-import React from "react";
-const Profiler = require("react").unstable_Profiler;
+import React, { Profiler } from "react";
 import { IntlProvider } from "react-intl";
 import { hook } from "renderer/hocs/hook";
 import { theme, ThemeProvider, StyleSheetManager } from "renderer/styles";
 import AppContents from "renderer/App/AppContents";
 import { isEqual } from "underscore";
+
+// List of props that should not be forwarded to DOM elements
+const nonDOMProps = new Set([
+  "dispatch",
+  "tab",
+  "sequence",
+  "restoredScrollTop",
+  "extraProps",
+  "fallbackGetKey",
+  "getKey",
+  "getRecord",
+  "RecordComponent",
+  "params",
+  "render",
+  "errorsHandled",
+  "loadingHandled",
+  "onResult",
+  "stale",
+  "loading",
+  "error",
+  "result",
+]);
+
+// Create a shouldForwardProp function that filters out Redux and other non-DOM props
+const shouldForwardProp = (prop: string) => !nonDOMProps.has(prop);
 
 const enableProfiling = process.env.ITCH_ENABLE_PROFILING === "1";
 
@@ -45,7 +69,10 @@ class App extends React.PureComponent<Props, State> {
 
     return (
       <IntlProvider key={localeVersion} locale={locale} messages={messages}>
-        <StyleSheetManager disableVendorPrefixes>
+        <StyleSheetManager
+          shouldForwardProp={shouldForwardProp}
+          disableVendorPrefixes
+        >
           <ThemeProvider theme={theme}>
             <AppContents />
           </ThemeProvider>

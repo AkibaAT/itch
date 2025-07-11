@@ -233,7 +233,7 @@ interface Props extends ModalWidgetProps<ManageGameParams, ManageGameResponse> {
 
 export default hook()(ManageGame);
 
-function formatUpload(upload: Upload): JSX.Element {
+function formatUpload(upload: Upload): React.ReactElement {
   return (
     <>
       <UploadIcon upload={upload} />

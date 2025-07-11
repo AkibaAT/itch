@@ -7,7 +7,7 @@ import navigation from "common/reducers/wind/navigation";
 import native from "common/reducers/wind/native";
 import { WindState } from "common/types";
 
-export default combineReducers<WindState>({
+export default combineReducers({
   properties,
   modals,
   tabInstances,

@@ -48,7 +48,7 @@ interface Props {
   buttonIcon?: string;
   buttonText?: LocalizedString;
   buttonAction?: React.MouseEventHandler<HTMLButtonElement>;
-  componentAction?: JSX.Element;
+  componentAction?: React.ReactElement;
   className?: string;
 }
 

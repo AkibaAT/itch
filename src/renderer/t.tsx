@@ -5,7 +5,7 @@ import { LocalizedString } from "common/types";
 import { memoize } from "common/util/lru-memoize";
 import { collapseIntlChunks } from "common/format/t";
 
-export function T(input: any): JSX.Element | string {
+export function T(input: any): React.ReactElement | string {
   if (Array.isArray(input)) {
     const id = input[0];
     const valuesIn = input[1] || {};
