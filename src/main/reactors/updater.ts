@@ -10,7 +10,7 @@ import { isEmpty } from "underscore";
 
 const logger = mainLogger.child(__filename);
 
-const SKIP_GAME_UPDATES = true;
+const SKIP_GAME_UPDATES = process.env.SKIP_GAME_UPDATES === "1";
 
 // 30 minutes * 60 = seconds, * 1000 = millis
 const DELAY_BETWEEN_PASSES = 20 * 60 * 1000;
@@ -34,7 +34,7 @@ function reschedule(store: Store) {
 export default function (watcher: Watcher) {
   if (SKIP_GAME_UPDATES) {
     logger.debug(
-      "Skipping game update check as requested per environment variable"
+      "Skipping game update check as requested per SKIP_GAME_UPDATES environment variable"
     );
   } else {
     watcher.on(actions.tick, async (store, action) => {

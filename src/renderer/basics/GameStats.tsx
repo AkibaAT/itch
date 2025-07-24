@@ -8,6 +8,7 @@ import LastPlayed from "renderer/basics/LastPlayed";
 import PlatformIcons from "renderer/basics/PlatformIcons";
 import TimeAgo from "renderer/basics/TimeAgo";
 import TotalPlaytime from "renderer/basics/TotalPlaytime";
+import ReviewSummary from "renderer/basics/ReviewSummary";
 import styled from "renderer/styles";
 import { T } from "renderer/t";
 
@@ -70,6 +71,7 @@ const GameStats = ({ game, status }: Props) => {
     return (
       <GameStatsDiv>
         <GameTitle>{game.title}</GameTitle>
+        <ReviewSummary game={game} />
         <TotalPlaytime game={game} cave={cave} />
         <LastPlayed game={game} cave={cave} />
       </GameStatsDiv>
@@ -84,6 +86,7 @@ const GameStats = ({ game, status }: Props) => {
     return (
       <GameStatsDiv>
         <GameTitle>{game.title}</GameTitle>
+        <ReviewSummary game={game} />
         <div className="total-playtime--line game-summary">
           {T([`usage_stats.description.${classification}`])}
           {showPlatforms ? (
