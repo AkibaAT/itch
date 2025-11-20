@@ -30,6 +30,8 @@ jobs:
     - name: Build and package
       run: |
         node release/package-all.js --os linux --arch amd64
+      env:
+        ITCH_TEST_ACCOUNT_API_KEY: ${{ secrets.ITCH_TEST_ACCOUNT_API_KEY }}
 
     - name: Upload artifact
       if: startsWith(github.ref, 'refs/tags/')
@@ -60,6 +62,8 @@ jobs:
     - name: Build and package
       run: |
         node release/package-all.js --os windows --arch amd64
+      env:
+        ITCH_TEST_ACCOUNT_API_KEY: ${{ secrets.ITCH_TEST_ACCOUNT_API_KEY }}
 
     - name: Upload artifact
       if: startsWith(github.ref, 'refs/tags/')
@@ -92,6 +96,8 @@ jobs:
     - name: Build and package (x64)
       run: |
         node release/package-all.js --os darwin --arch amd64
+      env:
+        ITCH_TEST_ACCOUNT_API_KEY: ${{ secrets.ITCH_TEST_ACCOUNT_API_KEY }}
 
     - name: Upload x64 build
       uses: actions/upload-artifact@v4
@@ -123,6 +129,8 @@ jobs:
     - name: Build and package (arm64)
       run: |
         node release/package-all.js --os darwin --arch arm64
+      env:
+        ITCH_TEST_ACCOUNT_API_KEY: ${{ secrets.ITCH_TEST_ACCOUNT_API_KEY }}
 
     - name: Upload arm64 build
       uses: actions/upload-artifact@v4
