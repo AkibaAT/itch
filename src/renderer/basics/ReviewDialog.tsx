@@ -200,7 +200,7 @@ const LoadMoreButton = styled.button`
   font-size: ${(props) => props.theme.fontSizes.baseText};
 
   &:hover {
-    background: ${(props) => props.theme.accentSecondary};
+    background: ${(props) => props.theme.lightAccent};
   }
 
   &:disabled {
@@ -234,7 +234,7 @@ interface Review {
   id: number;
   rating: number;
   review: string;
-  is_reviewed: boolean;
+  is_reviewed?: boolean;
   published_at: string;
   rater: {
     id: number;

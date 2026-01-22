@@ -71,7 +71,7 @@ class App extends React.PureComponent<Props, State> {
       <IntlProvider key={localeVersion} locale={locale} messages={messages}>
         <StyleSheetManager
           shouldForwardProp={shouldForwardProp}
-          disableVendorPrefixes
+          enableVendorPrefixes={false}
         >
           <ThemeProvider theme={theme}>
             <AppContents />

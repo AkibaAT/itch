@@ -219,7 +219,7 @@ export function main() {
     setInterval(() => {
       try {
         // Use stopForwarding to prevent tick from being synced to renderers
-        store.dispatch(stopForwarding(actions.tick({})));
+        store.dispatch(stopForwarding(actions.tick({})) as any);
       } catch (e) {
         mainLogger.error(`While dispatching tick: ${e.stack}`);
       }

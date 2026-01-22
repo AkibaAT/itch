@@ -26,6 +26,7 @@ export interface Dispatch {
 export interface Action<T extends Object> {
   type: string;
   payload?: T;
+  [extraProps: string]: unknown;
 }
 
 interface Watcher {

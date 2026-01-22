@@ -135,15 +135,19 @@ export const theme = {
 
 export type Theme = typeof theme;
 
-import * as sc from "styled-components";
-const {
-  default: styled,
+import styled, {
   css,
   keyframes,
   createGlobalStyle,
   ThemeProvider,
   StyleSheetManager,
-} = sc as ThemedStyledComponentsModule<Theme>;
+} from "styled-components";
+
+// Extend the default theme interface for styled-components v6
+declare module "styled-components" {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  export interface DefaultTheme extends Theme {}
+}
 
 export default styled;
 export { css, keyframes, createGlobalStyle, ThemeProvider, StyleSheetManager };
